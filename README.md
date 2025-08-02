@@ -1,5 +1,8 @@
 Task Manager Mobile App
+
+
 Overview
+
 Task Manager is a mobile application designed to help users organize and manage projects and tasks efficiently. Built with Flutter for the frontend and Django REST Framework for the backend, this app provides a seamless user experience with features like task creation, deletion, and dynamic due date tracking. This is my first mobile app, showcasing a clean UI and robust functionality for task management.
 Features
 
