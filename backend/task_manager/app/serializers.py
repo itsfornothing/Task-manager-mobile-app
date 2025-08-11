@@ -113,5 +113,10 @@ class TaskSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email', 'fullname']
+        fields = ['email', 'fullname', 'profile_url']
         read_only_fields = ['email', 'fullname']
+
+    def validate_profile_url(self, value):
+        if value and len(value) > 1250:
+            raise serializers.ValidationError('Profile URL path must not exceed 255 characters.')
+        return value

@@ -8,7 +8,6 @@ class ApiService {
   static const storage = FlutterSecureStorage();
   static final _dateFormatter = DateFormat('yyyy-MM-dd');
 
-
   Future<String?> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('${baseUrl}login/'),
@@ -41,7 +40,6 @@ class ApiService {
       throw Exception('Signup failed: ${response.body}');
     }
   }
-
 
   Future<void> logout() async {
     final token = await getToken();
@@ -79,7 +77,7 @@ class ApiService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['results']['data'] == null) {
-        return []; 
+        return [];
       }
       return data['results']['data'];
     } else {
@@ -132,7 +130,7 @@ class ApiService {
       final data = jsonDecode(response.body);
 
       if (data['results']['data'] == null) {
-        return []; 
+        return [];
       }
       return data['results']['data'];
     } else {
@@ -177,6 +175,23 @@ class ApiService {
 
     if (response.statusCode != 204) {
       throw Exception('Failed to delete task: ${response.body}');
+    }
+  }
+
+  Future<void> addProfile(String profileUrl) async {
+    final token = await getToken();
+    if (token == null) throw Exception('No token found');
+    final response = await http.patch(
+      Uri.parse('${baseUrl}profile/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'profile_url': profileUrl}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update profile: ${response.body}');
     }
   }
 

@@ -8,7 +8,7 @@ from .serializers import RegisterationSerializer, LoginSerializer, ProjectSerial
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle
 from .authentication import JWTAuthentication
-from .models import BlacklistedToken, Project, Task
+from .models import BlacklistedToken, Project, Task, CustomUser
 from rest_framework.pagination import PageNumberPagination
 
 
@@ -158,9 +158,16 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        try:
-            user = request.user
-            serializer = ProfileSerializer(user)
+        serializer = ProfileSerializer(request.user)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        serializer = ProfileSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"status": "error", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
