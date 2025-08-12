@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:task_manager/screens/noti_service.dart';
 import 'package:task_manager/screens/tabs.dart';
 import 'package:task_manager/screens/login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,6 +9,8 @@ import 'package:task_manager/provider/profile_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  NotiService().initNotification();
   final storage = FlutterSecureStorage();
   final token = await storage.read(key: 'auth_token');
 
