@@ -16,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final ApiService apiService = ApiService();
+  bool _isObscure = true;
+
 
   void _goToSignUp(BuildContext context) {
     Navigator.push(
@@ -60,7 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_outlined),
         ),
-        title: const Text('Welcome back', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Welcome back',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -78,10 +83,21 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _passwordController,
                 maxLength: 50,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: _isObscure
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                ),
                 validator: validatePassword,
-                
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -97,7 +113,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text('Log In', style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Spacer(),
