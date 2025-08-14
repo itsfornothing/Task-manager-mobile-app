@@ -18,6 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final ApiService apiService = ApiService();
+  bool _isObscure = true;
 
   void _goToLogin(BuildContext context) {
     Navigator.push(
@@ -65,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_outlined),
         ),
-        title: Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Padding(
         padding: EdgeInsets.all(12),
@@ -89,17 +90,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _passwordController,
                 maxLength: 50,
-                decoration: InputDecoration(label: Text('Password')),
                 validator: (value) => validatePassword(value),
-                obscureText: true,
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  label: Text('Password'),
+                  suffixIcon: IconButton(
+                    icon: _isObscure
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                ),
               ),
               TextFormField(
                 controller: _confirmPasswordController,
                 maxLength: 50,
-                decoration: InputDecoration(label: Text('Confirm Password')),
                 validator: (value) =>
                     validateConfirmPassword(value, _passwordController.text),
-                obscureText: true,
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  label: Text('Confirm Password'),
+                  suffixIcon: IconButton(
+                    icon: _isObscure
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                ),
               ),
               SizedBox(height: 16),
 
@@ -118,7 +143,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Spacer(),
